@@ -1,0 +1,123 @@
+[gd_scene load_steps=6 format=3 uid="uid://dyd2l063a0gir"]
+
+[ext_resource type="Script" uid="uid://dkkr28yxakigb" path="res://scripts/board.gd" id="1_board"]
+[ext_resource type="PackedScene" path="res://scenes/unit.tscn" id="2_unit"]
+[ext_resource type="Script" path="res://scripts/game.gd" id="3_game"]
+[ext_resource type="Script" path="res://scripts/hud.gd" id="4_hud"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_ground"]
+size = Vector3(10, 0.2, 10)
+
+[node name="Main" type="Node3D" unique_id=411135566]
+script = ExtResource("3_game")
+
+[node name="Ground" type="MeshInstance3D" parent="." unique_id=1643998868]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
+mesh = SubResource("BoxMesh_ground")
+
+[node name="Sun" type="DirectionalLight3D" parent="." unique_id=2145028908]
+transform = Transform3D(1, 0, 0, 0, 0.5, 0.866025, 0, -0.866025, 0.5, 0, 0, 0)
+
+[node name="Camera" type="Camera3D" parent="." unique_id=348082163]
+transform = Transform3D(0.707107, -0.457496, 0.539164, 0, 0.762493, 0.646997, -0.707107, -0.457496, 0.539164, 10, 12, 10)
+current = true
+near = 0.1
+far = 80.0
+
+[node name="Board" type="Node3D" parent="." unique_id=1919074225]
+script = ExtResource("1_board")
+
+[node name="PlayerScout" parent="." instance=ExtResource("2_unit")]
+grid_position = Vector2i(1, 2)
+team = 0
+archetype = 0
+
+[node name="PlayerGuard" parent="." instance=ExtResource("2_unit")]
+grid_position = Vector2i(1, 5)
+team = 0
+archetype = 1
+
+[node name="EnemyScout" parent="." instance=ExtResource("2_unit")]
+grid_position = Vector2i(6, 2)
+team = 1
+archetype = 0
+
+[node name="EnemyBerserker" parent="." instance=ExtResource("2_unit")]
+grid_position = Vector2i(5, 5)
+team = 1
+archetype = 2
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+script = ExtResource("4_hud")
+
+[node name="TurnLabel" type="Label" parent="CanvasLayer"]
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 280.0
+offset_bottom = 44.0
+text = "Turn: PLAYER"
+
+[node name="UnitPanel" type="VBoxContainer" parent="CanvasLayer"]
+offset_left = 16.0
+offset_top = 52.0
+offset_right = 280.0
+offset_bottom = 168.0
+
+[node name="UnitNameLabel" type="Label" parent="CanvasLayer/UnitPanel"]
+text = "Selected: None"
+
+[node name="TypeLabel" type="Label" parent="CanvasLayer/UnitPanel"]
+text = "Type: -"
+
+[node name="HPLabel" type="Label" parent="CanvasLayer/UnitPanel"]
+text = "HP: -"
+
+[node name="APLabel" type="Label" parent="CanvasLayer/UnitPanel"]
+text = "AP: -"
+
+[node name="ShowEnemyHPButton" type="CheckButton" parent="CanvasLayer"]
+offset_left = 16.0
+offset_top = 176.0
+offset_right = 280.0
+offset_bottom = 208.0
+text = "Show Enemy HP"
+
+[node name="EndTurnButton" type="Button" parent="CanvasLayer"]
+offset_left = 16.0
+offset_top = 216.0
+offset_right = 136.0
+offset_bottom = 256.0
+text = "End Turn"
+
+[node name="CombatPanel" type="Control" parent="CanvasLayer"]
+offset_left = 16.0
+offset_top = 272.0
+offset_right = 360.0
+offset_bottom = 616.0
+
+[node name="CombatLabel" type="Label" parent="CanvasLayer/CombatPanel"]
+offset_right = 344.0
+offset_bottom = 344.0
+autowrap_mode = 3
+
+[node name="RulesPanel" type="Panel" parent="CanvasLayer"]
+anchor_left = 1.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -300.0
+offset_top = 16.0
+offset_right = -16.0
+offset_bottom = -16.0
+
+[node name="RulesLabel" type="Label" parent="CanvasLayer/RulesPanel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 12.0
+offset_top = 12.0
+offset_right = -12.0
+offset_bottom = -12.0
+autowrap_mode = 3
+text = "QUICK RULES"
+
+[connection signal="pressed" from="CanvasLayer/EndTurnButton" to="." method="end_turn"]
