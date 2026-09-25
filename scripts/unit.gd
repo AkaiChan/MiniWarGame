@@ -20,6 +20,9 @@ const COLOR_PLAYER := Color(0.42, 0.54, 0.68)
 const COLOR_ENEMY := Color(0.68, 0.42, 0.40)
 const COLOR_PLAYER_EXHAUSTED := Color(0.24, 0.30, 0.38)
 const COLOR_ENEMY_EXHAUSTED := Color(0.38, 0.22, 0.22)
+const TEXTURE_PLAYER := preload("res://assets/units/human.png")
+const TEXTURE_ENEMY := preload("res://assets/units/goblin.png")
+const SPRITE_EXHAUSTED := Color(0.45, 0.45, 0.45, 1.0)
 
 @export var grid_position: Vector2i
 @export var team: Team = Team.PLAYER
@@ -48,6 +51,7 @@ func _ready() -> void:
 	_apply_archetype()
 	current_hp = max_hp
 	current_ap = max_ap
+	_apply_character_sprite()
 	_apply_footprint_visual()
 	update_visual_state()
 
@@ -118,14 +122,20 @@ func _die() -> void:
 
 
 func update_visual_state() -> void:
-	var color: Color
+	var base_color: Color
 	if current_ap > 0:
-		color = COLOR_PLAYER if team == Team.PLAYER else COLOR_ENEMY
+		base_color = COLOR_PLAYER if team == Team.PLAYER else COLOR_ENEMY
+		$CharacterSprite.modulate = Color.WHITE
 	else:
-		color = COLOR_PLAYER_EXHAUSTED if team == Team.PLAYER else COLOR_ENEMY_EXHAUSTED
+		base_color = COLOR_PLAYER_EXHAUSTED if team == Team.PLAYER else COLOR_ENEMY_EXHAUSTED
+		$CharacterSprite.modulate = SPRITE_EXHAUSTED
 	var material := StandardMaterial3D.new()
-	material.albedo_color = color
-	$Body.material_override = material
+	material.albedo_color = base_color
+	$Base.material_override = material
+
+
+func _apply_character_sprite() -> void:
+	$CharacterSprite.texture = TEXTURE_PLAYER if team == Team.PLAYER else TEXTURE_ENEMY
 
 
 func _apply_archetype() -> void:

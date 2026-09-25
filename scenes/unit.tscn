@@ -1,6 +1,7 @@
-[gd_scene load_steps=7 format=3]
+[gd_scene load_steps=8 format=3]
 
 [ext_resource type="Script" path="res://scripts/unit.gd" id="1_unit"]
+[ext_resource type="Texture2D" uid="uid://ckovr6dy2p41t" path="res://assets/units/human.png" id="2_human"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_body"]
 albedo_color = Color(0.48, 0.58, 0.54, 1)
@@ -27,8 +28,18 @@ radius = 0.32
 script = ExtResource("1_unit")
 
 [node name="Body" type="MeshInstance3D" parent="."]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.34, 0)
 mesh = SubResource("CapsuleMesh_body")
+
+[node name="CharacterSprite" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.78, 0)
+pixel_size = 0.00126
+shaded = false
+alpha_cut = 1
+texture_filter = 0
+billboard = 2
+texture = ExtResource("2_human")
 
 [node name="Base" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.04, 0)

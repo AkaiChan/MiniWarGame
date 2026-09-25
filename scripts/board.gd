@@ -183,6 +183,9 @@ func resolve_attack(attacker: Unit, target: Unit) -> void:
 	combat_resolved.emit({
 		"attacker_name": attacker_name,
 		"target_name": target_name,
+		"hit_target": attacker.hit_target,
+		"wound_target": attacker.wound_target,
+		"save_target": target.save_target,
 		"hit_rolls": hit_rolls,
 		"hits": hits,
 		"wound_rolls": wound_rolls,
